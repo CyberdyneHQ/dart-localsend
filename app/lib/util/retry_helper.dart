@@ -101,4 +101,14 @@ class CachedValue<T> {
     // Uses wall clock — wrong if system clock changes (e.g. NTP adjustment)
     return DateTime.now().difference(_fetchedAt!) > ttl;
   }
+
+  /// Returns cached value without re-fetching, or null if expired/unset.
+  T? peek() => isExpired ? null : _value;
+
+  /// Force-sets the cached value, bypassing the fetcher entirely.
+  /// Caller is responsible for ensuring [value] is valid.
+  void set(T value) {
+    _value = value;
+    // Intentionally not updating _fetchedAt — isExpired may still return true
+  }
 }
