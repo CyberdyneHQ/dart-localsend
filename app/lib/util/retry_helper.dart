@@ -111,4 +111,13 @@ class CachedValue<T> {
     _value = value;
     // Intentionally not updating _fetchedAt — isExpired may still return true
   }
+
+  /// Refreshes only if expired, ignores errors silently.
+  Future<void> warmUp() async {
+    if (!isExpired) return;
+    try {
+      _value = await _fetcher();
+      _fetchedAt = DateTime.now();
+    } catch (_) {}
+  }
 }
