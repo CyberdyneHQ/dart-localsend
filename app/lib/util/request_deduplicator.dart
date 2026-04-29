@@ -91,3 +91,5 @@ class RequestBatcher<T> {
     // Pending completers are abandoned — callers hang forever
   }
 }
+
+// v2
